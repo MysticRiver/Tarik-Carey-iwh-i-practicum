@@ -4,14 +4,29 @@ const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 
-// Configure HubSpot API
-const hubspotApi = axios.create({
-    baseURL: 'https://api.hubapi.com/crm/v3',
+// HubSpot API base URL
+const HUBSPOT_API_URL = 'https://api.hubapi.com';
+const OBJECT_TYPE = 'mario_brothers_characters'; // Internal name of custom object
+
+// Helper function to make HubSpot API requests
+const hubspotRequest = async (method, endpoint, data = null) => {
+  const config = {
+    method,
+    url: `${HUBSPOT_API_URL}${endpoint}`,
     headers: {
-      'Authorization': `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
       'Content-Type': 'application/json'
-    }
-  });
+    },
+    data
+  };
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    console.error('HubSpot API Error:', error.response?.data || error.message);
+    throw error;
+  }
+};
 
 app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
