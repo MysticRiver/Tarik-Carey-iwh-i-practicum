@@ -1,6 +1,17 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
+require('dotenv').config();
+const port = process.env.PORT || 3000;
+
+// Configure HubSpot API
+const hubspotApi = axios.create({
+    baseURL: 'https://api.hubapi.com/crm/v3',
+    headers: {
+      'Authorization': `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
+      'Content-Type': 'application/json'
+    }
+  });
 
 app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
