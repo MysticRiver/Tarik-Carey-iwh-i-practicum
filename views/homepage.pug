@@ -2,10 +2,10 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/css/style.css')
+    link(rel="stylesheet", href="/css/style.css")
   body
     h1 Mario Brothers Characters
-    a(href='/update-cobj') Add to this table
+    a(href='/update-cobj') Add a New Character
     table
       thead
         tr
@@ -13,8 +13,8 @@ html
           th Role
           th Power Level
       tbody
-        each character in characters
+        each record in records
           tr
-            td= character.properties.name
-            td= character.properties.role
-            td= character.properties.powerlevel
+            td= record.properties.name
+            td= record.properties.role
+            td= record.properties.powerlevel
