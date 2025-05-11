@@ -4,10 +4,23 @@ const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+
 // HubSpot API base URL
 const HUBSPOT_API_URL = 'https://api.hubapi.com';
 const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
 const CUSTOM_OBJECT_TYPE = process.env.CUSTOM_OBJECT_TYPE;
+
+const hubspot = axios.create({
+    baseURL: 'https://api.hubapi.com',
+    headers: {
+      Authorization: `Bearer ${process.env.HUBSPOT_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
 // Helper function to make HubSpot API requests
 const hubspotRequest = async (method, endpoint, data = null) => {
