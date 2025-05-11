@@ -38,7 +38,21 @@ const PRIVATE_APP_ACCESS = '';
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 
-// * Code for Route 1 goes here
+// * Code for Route 1 goes here// GET homepage: Fetch and display all Mario Brothers characters
+app.get('/', async (req, res) => {
+    try {
+      const response = await hubspotRequest('get', `/crm/v3/objects/${OBJECT_TYPE}?properties=name,role,powerlevel`);
+      const characters = response.results || [];
+      res.render('homepage', {
+        title: 'Mario Brothers Characters | Integrating With HubSpot I Practicum',
+        characters
+      });
+    } catch (error) {
+      res.status(500).send('Error fetching Mario Brothers characters');
+    }
+  });
+
+
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
