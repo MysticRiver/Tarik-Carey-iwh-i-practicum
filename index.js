@@ -6,7 +6,8 @@ const port = process.env.PORT || 3000;
 
 // HubSpot API base URL
 const HUBSPOT_API_URL = 'https://api.hubapi.com';
-const OBJECT_TYPE = 'mario_brothers_characters'; // Internal name of custom object
+const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
+const CUSTOM_OBJECT_TYPE = process.env.CUSTOM_OBJECT_TYPE;
 
 // Helper function to make HubSpot API requests
 const hubspotRequest = async (method, endpoint, data = null) => {
@@ -14,7 +15,7 @@ const hubspotRequest = async (method, endpoint, data = null) => {
     method,
     url: `${HUBSPOT_API_URL}${endpoint}`,
     headers: {
-      Authorization: `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${HUBSPOT_TOKEN}`,
       'Content-Type': 'application/json'
     },
     data
