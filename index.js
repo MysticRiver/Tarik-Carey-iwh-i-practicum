@@ -53,6 +53,25 @@ app.get('/update-cobj', (req, res) => {
 
 // * Code for Route 3 goes here
 
+// POST new character
+app.post('/update-cobj', async (req, res) => {
+    const { name, role, powerlevel } = req.body;
+    const data = {
+      properties: {
+        name,
+        role,
+        powerlevel: parseInt(powerlevel)
+      }
+    };
+  
+    try {
+      await hubspotRequest('post', `/crm/v3/objects/${OBJECT_TYPE}`, data);
+      res.redirect('/');
+    } catch (error) {
+      res.status(500).send('Error creating Mario Brothers character');
+    }
+  });
+
 /** 
 * * This is sample code to give you a reference for how you should structure your calls. 
 
