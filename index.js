@@ -4,10 +4,12 @@ const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 
+//Middleware
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // HubSpot API base URL
 const HUBSPOT_API_URL = 'https://api.hubapi.com';
@@ -22,30 +24,8 @@ const hubspot = axios.create({
     },
   });
 
-// Helper function to make HubSpot API requests
-const hubspotRequest = async (method, endpoint, data = null) => {
-  const config = {
-    method,
-    url: `${HUBSPOT_API_URL}${endpoint}`,
-    headers: {
-      Authorization: `Bearer ${HUBSPOT_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    data
-  };
-  try {
-    const response = await axios(config);
-    return response.data;
-  } catch (error) {
-    console.error('HubSpot API Error:', error.response?.data || error.message);
-    throw error;
-  }
-};
 
-app.set('view engine', 'pug');
-app.use(express.static(__dirname + '/public'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
 
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
 const PRIVATE_APP_ACCESS = '';
