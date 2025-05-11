@@ -41,14 +41,16 @@ const PRIVATE_APP_ACCESS = '';
 // * Code for Route 1 goes here// GET homepage: Fetch and display all Mario Brothers characters
 app.get('/', async (req, res) => {
     try {
-      const response = await hubspotRequest('get', `/crm/v3/objects/${OBJECT_TYPE}?properties=name,role,powerlevel`);
-      const characters = response.results || [];
-      res.render('homepage', {
-        title: 'Mario Brothers Characters | Integrating With HubSpot I Practicum',
-        characters
+      const response = await hubspot.get(`/crm/v3/objects/${CUSTOM_OBJECT_TYPE}`, {
+        params: {
+          properties: 'name,role,powerlevel'
+        }
       });
+      const records = response.data.results;
+      res.render('homepage', { title: 'Mario Characters | Practicum', records });
     } catch (error) {
-      res.status(500).send('Error fetching Mario Brothers characters');
+      console.error('Error fetching characters:', error.response?.data || error.message);
+      res.status(500).send('Error loading homepage.');
     }
   });
 
