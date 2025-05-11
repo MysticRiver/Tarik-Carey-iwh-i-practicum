@@ -70,19 +70,21 @@ app.get('/update-cobj', (req, res) => {
 // POST new character
 app.post('/update-cobj', async (req, res) => {
     const { name, role, powerlevel } = req.body;
+  
     const data = {
       properties: {
         name,
         role,
-        powerlevel: parseInt(powerlevel)
-      }
+        powerlevel: Number(powerlevel),
+      },
     };
   
     try {
-      await hubspotRequest('post', `/crm/v3/objects/${OBJECT_TYPE}`, data);
+      await hubspot.post(`/crm/v3/objects/${CUSTOM_OBJECT_TYPE}`, data);
       res.redirect('/');
     } catch (error) {
-      res.status(500).send('Error creating Mario Brothers character');
+      console.error('Error creating Mario Brothers character:', error.response?.data || error.message);
+      res.status(500).send('Failed to create object');
     }
   });
 
